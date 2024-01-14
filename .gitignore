@@ -1,3 +1,6 @@
+#target dir
+/target
+/temp
 # Compiled class file
 *.class
 
