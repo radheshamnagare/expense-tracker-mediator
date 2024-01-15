@@ -16,7 +16,7 @@ import java.util.List;
 @XmlRootElement(name = "login-response")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginResponse  {
+public class MediatorLoginResponse {
 
     @XmlElement(name="user-name")
     @JsonProperty("user-name")

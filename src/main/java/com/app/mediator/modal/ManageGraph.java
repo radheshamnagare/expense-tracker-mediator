@@ -9,8 +9,8 @@ import com.app.mediator.common.CommonValidator;
 import com.app.mediator.common.ConstantPool;
 import com.app.mediator.common.ErrorConstatnt;
 import com.app.mediator.requst.ExpenseTrackerGraphReq;
-import com.app.mediator.response.ExpenseTrackerGraphResponse;
-import com.app.mediator.server.response.ExpenseTrackerGraphServerResponse;
+import com.app.mediator.response.MadiatorExpenseTrackerGraphResponse;
+import com.app.mediator.server.response.ExpenseTrackerGraphResponse;
 import com.app.mediator.service.GraphService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
@@ -28,8 +28,8 @@ public class ManageGraph {
     HttpServletRequest request;
     GraphService graphService;
 
-    private ExpenseTrackerGraphResponse getExpenseTrackerGraphResponse(List<GraphDetails> graphDetails, List<FailRespose> fail, SystemError error, String apiKey, String token){
-        ExpenseTrackerGraphResponse response = new ExpenseTrackerGraphResponse();
+    private MadiatorExpenseTrackerGraphResponse getExpenseTrackerGraphResponse(List<GraphDetails> graphDetails, List<FailRespose> fail, SystemError error, String apiKey, String token){
+        MadiatorExpenseTrackerGraphResponse response = new MadiatorExpenseTrackerGraphResponse();
         try{
             LOGGER.printf(Level.INFO,"Entry in getExpenseTrackerGraphResponse()");
             response.setGraphDetails(graphDetails);
@@ -65,8 +65,8 @@ public class ManageGraph {
         }
         return true;
     }
-    public ExpenseTrackerGraphResponse graphDetails(ExpenseTrackerGraphReq expenseTrackerGraphReq){
-        ExpenseTrackerGraphResponse response=null;
+    public MadiatorExpenseTrackerGraphResponse graphDetails(ExpenseTrackerGraphReq expenseTrackerGraphReq){
+        MadiatorExpenseTrackerGraphResponse response=null;
         String apiKey = CommonService.getSessionId(request);
         String token = CommonService.getToken();
         SystemError error;
@@ -77,7 +77,7 @@ public class ManageGraph {
                 error = CommonService.getSystemError(ConstantPool.ERROR_CODE_INVALID,ErrorConstatnt.DESC_SESSION_TOKEN,apiKey+" "+token);
                 response = getExpenseTrackerGraphResponse(new ArrayList<>(),fail,error,apiKey,token);
             }else if(isValidExpenseTrackerGraphRequest(expenseTrackerGraphReq,fail)){
-                ExpenseTrackerGraphServerResponse serverResponse = graphService.graphDetails(expenseTrackerGraphReq);
+                ExpenseTrackerGraphResponse serverResponse = graphService.graphDetails(expenseTrackerGraphReq);
                 error = new SystemError(serverResponse.getErrorCode(), serverResponse.getErrorStatus() ,serverResponse.getErrorDescription());
                 if(!CommonValidator.isEmpty(serverResponse.getFail()))
                     fail.addAll(serverResponse.getFail());

@@ -1,8 +1,7 @@
 package com.app.mediator.response;
 
-
-import com.app.mediator.bean.ExpenseTrackerBean;
 import com.app.mediator.bean.FailRespose;
+import com.app.mediator.bean.GraphDetails;
 import com.app.mediator.bean.ResponseStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,20 +14,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @Data
-@XmlRootElement(name="expense-tracker-details-response")
+@XmlRootElement(name = "expense-tracker-graph-response")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ExpenseTrackerDetailsResponse  {
+public class MadiatorExpenseTrackerGraphResponse {
 
-    @XmlElement(name="expense-tracker-details")
-    @JsonProperty("expense-tracker-details")
-    List<ExpenseTrackerBean> expenseTrackerBeanList;
+    @XmlElement(name = "graph-details")
+    @JsonProperty("graph-details")
+    List<GraphDetails> graphDetails;
 
-    @XmlElement(name="status")
+    @XmlElement(name = "status")
     @JsonProperty("status")
     ResponseStatus status;
 
-    @XmlElement(name="fail")
+    @XmlElement(name = "fail")
     @JsonProperty("fail")
     List<FailRespose> fail;
 }

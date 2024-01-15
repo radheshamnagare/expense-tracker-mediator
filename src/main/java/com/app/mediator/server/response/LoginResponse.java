@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @Data
-@XmlRootElement(name="login-response")
+@XmlRootElement(name = "login-response")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginServerResponse extends ResponseBase {
+public class LoginResponse extends ResponseBase {
 
     @XmlElement(name="user-name")
     @JsonProperty("user-name")

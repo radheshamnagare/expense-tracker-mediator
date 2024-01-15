@@ -2,9 +2,9 @@ package com.app.mediator.service;
 
 
 import com.app.mediator.requst.ExpenseTrackerGraphReq;
-import com.app.mediator.server.response.ExpenseTrackerGraphServerResponse;
+import com.app.mediator.server.response.ExpenseTrackerGraphResponse;
 
 public interface GraphService {
 
-    ExpenseTrackerGraphServerResponse graphDetails(ExpenseTrackerGraphReq req);
+    ExpenseTrackerGraphResponse graphDetails(ExpenseTrackerGraphReq req);
 }

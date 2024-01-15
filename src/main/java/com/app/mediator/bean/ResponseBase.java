@@ -10,12 +10,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Data
-@XmlRootElement(name="response-base")
+@XmlRootElement(name = "response-base")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseBase {
 
-    @XmlElement(name = "error-code")
+    @XmlElement(name="error-code")
     @JsonProperty("error-code")
     String errorCode;
 

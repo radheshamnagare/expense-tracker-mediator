@@ -22,4 +22,8 @@ public class ExpenseTrackerGraphReq {
     @XmlElement(name="year")
     @JsonProperty("year")
     String year;
+
+    @XmlElement(name="user-id")
+    @JsonProperty("user-id")
+    int userId;
 }

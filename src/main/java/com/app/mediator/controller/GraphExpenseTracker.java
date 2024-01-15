@@ -1,7 +1,7 @@
 package com.app.mediator.controller;
 import com.app.mediator.modal.ManageGraph;
 import com.app.mediator.requst.ExpenseTrackerGraphReq;
-import com.app.mediator.response.ExpenseTrackerGraphResponse;
+import com.app.mediator.response.MadiatorExpenseTrackerGraphResponse;
 import com.app.mediator.service.GraphService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
@@ -27,8 +27,8 @@ public class GraphExpenseTracker {
     ConfigurableApplicationContext appContext;
 
     @RequestMapping(value = "/lookup" ,method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ExpenseTrackerGraphResponse> graphDetails(@RequestBody ExpenseTrackerGraphReq expenseTrackerGraphReq){
-        ExpenseTrackerGraphResponse reponse=null;
+    public ResponseEntity<MadiatorExpenseTrackerGraphResponse> graphDetails(@RequestBody ExpenseTrackerGraphReq expenseTrackerGraphReq){
+        MadiatorExpenseTrackerGraphResponse reponse=null;
         try{
             LOGGER.printf(Level.INFO,"Entry in graphDetails()");
             ManageGraph manageGraph = appContext.getBean(ManageGraph.class);

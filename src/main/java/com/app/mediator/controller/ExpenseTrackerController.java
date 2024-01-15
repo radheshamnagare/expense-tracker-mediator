@@ -5,7 +5,7 @@ import com.app.mediator.modal.ManageExpenseTracker;
 import com.app.mediator.requst.ExpenseTrackerDetailsRequest;
 import com.app.mediator.requst.ExpenseTrackerListReq;
 import com.app.mediator.response.DefaultApiResponse;
-import com.app.mediator.response.ExpenseTrackerDetailsResponse;
+import com.app.mediator.response.MeditaorExpenseTrackerDetailsResponse;
 import com.app.mediator.service.ExpenseTrackerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Level;
@@ -31,8 +31,8 @@ public class ExpenseTrackerController {
     ConfigurableApplicationContext appContex;
 
     @RequestMapping(value = "/lookup", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ExpenseTrackerDetailsResponse> expenseTrackerDetails(@RequestBody ExpenseTrackerListReq expenseTrackerListReq) {
-        ExpenseTrackerDetailsResponse response = null;
+    public ResponseEntity<MeditaorExpenseTrackerDetailsResponse> expenseTrackerDetails(@RequestBody ExpenseTrackerListReq expenseTrackerListReq) {
+        MeditaorExpenseTrackerDetailsResponse response = null;
         try {
             LOGGER.printf(Level.INFO, "Entry in expenseTrackerDetails()");
             ManageExpenseTracker manageExpenseTracker = appContex.getBean(ManageExpenseTracker.class);

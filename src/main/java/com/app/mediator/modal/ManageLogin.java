@@ -8,12 +8,11 @@ import com.app.mediator.common.CommonValidator;
 import com.app.mediator.common.ConstantPool;
 import com.app.mediator.common.ErrorConstatnt;
 import com.app.mediator.requst.UserLoginRequst;
-import com.app.mediator.requst.UserLogoutRequest;
 import com.app.mediator.requst.UserRegisterRequest;
 import com.app.mediator.response.DefaultApiResponse;
 import com.app.mediator.response.DefaultResponse;
-import com.app.mediator.response.LoginResponse;
-import com.app.mediator.server.response.LoginServerResponse;
+import com.app.mediator.response.MediatorLoginResponse;
+import com.app.mediator.server.response.LoginResponse;
 import com.app.mediator.service.LoginUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
@@ -62,8 +61,8 @@ public class ManageLogin {
         return true;
     }
 
-    public static LoginResponse getLoginResponse(String success, SystemError error, List<FailRespose> fail, String sessionId, String token, String authToken,String userName) {
-        LoginResponse response = new LoginResponse();
+    public static MediatorLoginResponse getLoginResponse(String success, SystemError error, List<FailRespose> fail, String sessionId, String token, String authToken, String userName) {
+        MediatorLoginResponse response = new MediatorLoginResponse();
         try {
             LOGGER.printf(Level.INFO, "Entry in getLoginResponse()");
             response.setSuccess(success);
@@ -79,8 +78,8 @@ public class ManageLogin {
         return response;
     }
 
-    public LoginResponse manageLogin(UserLoginRequst userLoginRequest) {
-        LoginResponse response;
+    public MediatorLoginResponse manageLogin(UserLoginRequst userLoginRequest) {
+        MediatorLoginResponse response;
         SystemError error;
         String apiKey = CommonService.getSessionId(request);
         String token = CommonService.getToken();
@@ -91,12 +90,12 @@ public class ManageLogin {
                 error = CommonService.getSystemError(ConstantPool.ERROR_CODE_INVALID, ErrorConstatnt.DESC_SESSION_TOKEN, "");
                 response = getLoginResponse(String.valueOf(1), error, fail, apiKey, token, authToken,"");
             } else if (isValidLoginRequest(userLoginRequest, fail)) {
-                LoginServerResponse loginServerResponse = loginUserService.loginUser(userLoginRequest);
-                if (CommonValidator.isEmpty(loginServerResponse.getSuccess())) {
+                LoginResponse loginResponse = loginUserService.loginUser(userLoginRequest);
+                if (CommonValidator.isEmpty(loginResponse.getSuccess())) {
                     error = CommonService.getSystemError(ConstantPool.ERROR_CODE_FAIL, "", "");
                 } else
-                    error = new SystemError(loginServerResponse.getErrorCode(), loginServerResponse.getErrorStatus(), loginServerResponse.getErrorDescription());
-                response = getLoginResponse(loginServerResponse.getSuccess(), error, fail, apiKey, token, loginServerResponse.getJwtToken(),loginServerResponse.getUserName());
+                    error = new SystemError(loginResponse.getErrorCode(), loginResponse.getErrorStatus(), loginResponse.getErrorDescription());
+                response = getLoginResponse(loginResponse.getSuccess(), error, fail, apiKey, token, loginResponse.getJwtToken(), loginResponse.getUserName());
             } else {
                 error = CommonService.getSystemError(ConstantPool.ERROR_CODE_FAIL, "", "");
                 response = getLoginResponse(String.valueOf(0), error, fail, apiKey, token, "","");
@@ -110,29 +109,6 @@ public class ManageLogin {
         return response;
     }
 
-    private boolean isValidLogoutRequest(UserLogoutRequest userLogoutRequest, List<FailRespose> fail) {
-        try {
-            LOGGER.printf(Level.INFO, "Entry in isValidLogoutRequest()");
-            FailRespose failRespose;
-            if (CommonValidator.isEmpty(userLogoutRequest.getJwtToken())) {
-                failRespose = new FailRespose();
-                failRespose.setId(ErrorConstatnt.DESC_TOKEN);
-                failRespose.setReason(CommonService.getSystemError(ConstantPool.ERROR_CODE_REQUIRED, ErrorConstatnt.DESC_TOKEN, "").getErrorDescription());
-                fail.add(failRespose);
-                return false;
-            } else if (CommonValidator.isEmpty(userLogoutRequest.getUserId())) {
-                failRespose = new FailRespose();
-                failRespose.setId(ErrorConstatnt.DESC_USER_ID);
-                failRespose.setReason(CommonService.getSystemError(ConstantPool.ERROR_CODE_REQUIRED, ErrorConstatnt.DESC_USER_ID, "").getErrorDescription());
-                fail.add(failRespose);
-                return false;
-            }
-            LOGGER.printf(Level.INFO, "Exit from isValidLogoutRequest()");
-        } catch (Exception exception) {
-            LOGGER.printf(Level.ERROR, "Exception in isValidLogoutRequest(),[%1$s]");
-        }
-        return true;
-    }
 
     public DefaultApiResponse manageLogOut() {
         DefaultApiResponse response;
@@ -143,7 +119,10 @@ public class ManageLogin {
                 DefaultResponse serverResponse = loginUserService.logoutUser();
                 SystemError error = new SystemError(serverResponse.getErrorCode(), serverResponse.getErrorStatus(), serverResponse.getErrorDescription());
                 response = CommonService.getDefaultApiResponse(serverResponse.getSuccess(), error, fail, "", "");
-
+                if(serverResponse==null){
+                    error = CommonService.getSystemError(ConstantPool.ERROR_CODE_UNKNOWN, "", "");
+                    response = CommonService.getDefaultApiResponse(String.valueOf(0), error, fail, "", "");
+                }
             LOGGER.printf(Level.INFO, "Exit from manageLogOut");
         } catch (Exception ex) {
             SystemError error = CommonService.getSystemError(ConstantPool.ERROR_CODE_UNKNOWN, "", "");

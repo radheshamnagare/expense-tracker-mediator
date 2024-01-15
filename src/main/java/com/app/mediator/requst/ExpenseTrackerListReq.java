@@ -13,16 +13,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Data
-@XmlRootElement(name="expense-tracker-request")
+@XmlRootElement(name = "expense-tracker-list-request")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExpenseTrackerListReq {
 
     @XmlElement(name = "from-date")
     @JsonProperty("from-date")
-    String fromDate;
+    Date fromDate;
 
     @XmlElement(name = "to-date")
     @JsonProperty("to-date")
-    String toDate;
+    Date toDate;
+
+    @XmlElement(name="user-id")
+    @JsonProperty("user-id")
+    int userId;
 }

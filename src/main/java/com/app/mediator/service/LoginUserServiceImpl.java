@@ -2,10 +2,9 @@ package com.app.mediator.service;
 
 import com.app.mediator.proxy.CallProxy;
 import com.app.mediator.requst.UserLoginRequst;
-import com.app.mediator.requst.UserLogoutRequest;
 import com.app.mediator.requst.UserRegisterRequest;
 import com.app.mediator.response.DefaultResponse;
-import com.app.mediator.server.response.LoginServerResponse;
+import com.app.mediator.server.response.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ public class LoginUserServiceImpl implements LoginUserService{
     }
 
     @Override
-    public LoginServerResponse loginUser(UserLoginRequst userLoginReq) {
-        return CallProxy.doCall(userLoginReq,serverApi.userLoginUrl().trim(),"",new LoginServerResponse(),LoginServerResponse.class);
+    public LoginResponse loginUser(UserLoginRequst userLoginReq) {
+        return CallProxy.doCall(userLoginReq,serverApi.userLoginUrl().trim(),"",new LoginResponse(), LoginResponse.class);
     }
 
     @Override
